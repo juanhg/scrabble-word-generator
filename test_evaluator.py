@@ -18,8 +18,8 @@ class TestEvaluator(unittest.TestCase):
         result = evaluator.is_valid_char(invalid_char)
         self.assertFalse(result)
 
-    @parameterized.expand(['A', 'D', 'P', 'X', 'Z'])
-    def test_is_valid_char_with_char_between_A_and_Z_must_return_true(self, valid_char):
+    @parameterized.expand(['A', 'D', 'P', 'X', 'Z', 'b', 'c', 'd', 'j'])
+    def test_is_valid_char_with_char_between_a_and_Z_must_return_true(self, valid_char):
         evaluator = Evaluator()
         result = evaluator.is_valid_char(valid_char)
         self.assertTrue(result)
@@ -45,11 +45,34 @@ class TestEvaluator(unittest.TestCase):
             result = evaluator.get_char_score(char)
             self.assertEquals(result, expected)
 
-    def test_get_word_score_with_invalid_word_must_return_zero(self):
-        self.fail()
+    @parameterized.expand([
+        'a', 'x'
+    ])
+    def test_get_char_score_with_lowercase_return_equal_than_uppercase(self, lower_char):
+        evaluator = Evaluator()
+        upper_char = lower_char.upper()
+        expected = evaluator.get_char_score(upper_char)
+        result = evaluator.get_char_score(lower_char)
+        self.assertEquals(result, expected)
 
-    def test_get_word_score_with_valid_word_must_return_the_sum_of_all_char_scores(self):
-        self.fail()
+    @parameterized.expand([
+        'hel o', 'w0rld'
+    ])
+    def test_get_word_score_with_invalid_char_must_return_zero(self, word):
+        evaluator = Evaluator()
+        result = evaluator.get_word_score(word)
+        self.assertEquals(result, 0)
+
+    @parameterized.expand([
+        'Python', 'Rocks'
+    ])
+    def test_get_word_score_with_valid_word_must_return_the_sum_of_all_char_scores(self, word):
+        evaluator = Evaluator()
+        chars = [char for char in word]
+
+        expected = sum(map(evaluator.get_char_score, chars))
+        result = evaluator.get_word_score(word)
+        self.assertEquals(result, expected)
 
 
 if __name__ == '__main__':

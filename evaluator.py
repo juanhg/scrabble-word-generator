@@ -11,10 +11,20 @@ class Evaluator:
         }
 
     def is_valid_char(self, char):
-        return char in self._scores
+        return char.isalpha() and char.upper() in self._scores
 
     def get_char_score(self, char):
-        return self._scores[char] if self.is_valid_char(char) else 0
+        upper_char = char.upper()
+        return self._scores[upper_char] if self.is_valid_char(upper_char) else 0
+
+    def get_word_score(self, word):
+        score = 0
+        for char in word:
+            if self.is_valid_char(char):
+                score += self.get_char_score(char)
+            else:
+                return 0
+        return score;
 
     def get_scores(self):
         return self._scores
