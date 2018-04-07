@@ -30,47 +30,20 @@ class TestEvaluator(unittest.TestCase):
         result = evaluator.get_char_score(invalid_char)
         self.assertEquals(result, 0)
 
-    @parameterized.expand(['A', 'E', 'I', 'L', 'N', 'O', 'R', 'S', 'T', 'U'])
-    def test_get_char_score_with_very_common_char_must_return_1(self, common_char):
+    @parameterized.expand([
+        (['A', 'E', 'I', 'L', 'N', 'O', 'R', 'S', 'T', 'U'], 1),
+        (['D', 'G'], 2),
+        (['B', 'C', 'M', 'P'], 3),
+        (['F', 'H', 'V', 'W', 'Y'], 4),
+        (['K'], 5),
+        (['X', 'J'], 8),
+        (['Q', 'Z'], 10)
+    ])
+    def test_get_char_score_with_valid_char_must_return_proper_positive_integer(self, chars, expected):
         evaluator = Evaluator()
-        result = evaluator.get_char_score(common_char)
-        self.assertEquals(result, 1)
-
-    @parameterized.expand(['D', 'G'])
-    def test_get_char_score_with_common_char_must_return_2(self, common_char):
-        evaluator = Evaluator()
-        result = evaluator.get_char_score(common_char)
-        self.assertEquals(result, 2)
-
-    @parameterized.expand(['B', 'C', 'M', 'P'])
-    def test_get_char_score_with_infrequent_char_must_return_3(self, common_char):
-        evaluator = Evaluator()
-        result = evaluator.get_char_score(common_char)
-        self.assertEquals(result, 3)
-
-    @parameterized.expand(['F', 'H', 'V', 'W', 'Y'])
-    def test_get_char_score_with_very_infrequent_char_must_return_4(self, common_char):
-        evaluator = Evaluator()
-        result = evaluator.get_char_score(common_char)
-        self.assertEquals(result, 4)
-
-    @parameterized.expand(['K'])
-    def test_get_char_score_with_rare_char_must_return_5(self, common_char):
-        evaluator = Evaluator()
-        result = evaluator.get_char_score(common_char)
-        self.assertEquals(result, 5)
-
-    @parameterized.expand(['X', 'J'])
-    def test_get_char_score_with_very_rare_char_must_return_8(self, common_char):
-        evaluator = Evaluator()
-        result = evaluator.get_char_score(common_char)
-        self.assertEquals(result, 8)
-
-    @parameterized.expand(['Q', 'Z'])
-    def test_get_char_score_with_ultra_rare_char_must_return_10(self, common_char):
-        evaluator = Evaluator()
-        result = evaluator.get_char_score(common_char)
-        self.assertEquals(result, 10)
+        for char in chars:
+            result = evaluator.get_char_score(char)
+            self.assertEquals(result, expected)
 
     def test_get_word_score_with_invalid_word_must_return_zero(self):
         self.fail()
