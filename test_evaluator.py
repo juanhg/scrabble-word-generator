@@ -1,5 +1,5 @@
 import unittest
-from parameterized import parameterized, param
+from parameterized import parameterized
 from evaluator import Evaluator
 
 
